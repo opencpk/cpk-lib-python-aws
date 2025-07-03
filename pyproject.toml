@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cpk-lib-python-aws"
+version = "1.0.0"
+description = "CPK Python AWS Library - Collection of professional AWS tools and utilities"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+readme = "README.md"
+license = {text = "GPL-3.0"}
+requires-python = ">=3.8.1"
+dependencies = [
+    "boto3>=1.26.0",
+    "botocore>=1.29.0", 
+    "pyyaml>=6.0",
+    "certifi>=2023.7.22",
+    "urllib3>=1.25.4,<2.0.0",  # Changed this line
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",  # This should work with Python 3.8+
+    "mypy>=1.0.0",
+    "boto3-stubs[sso-admin,identitystore,organizations]>=1.26.0",
+]
+
+[project.scripts]
+aws-sso-auditor = "cpk_lib_python_aws.aws_sso_auditor.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/opencpk/cpk-lib-python-aws"
+Repository = "https://github.com/opencpk/cpk-lib-python-aws"
+Documentation = "https://github.com/opencpk/cpk-lib-python-aws#readme"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cpk_lib_python_aws*"]
+
+[tool.pytest.ini_options]
+testpaths = ["cpk_lib_python_aws/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
