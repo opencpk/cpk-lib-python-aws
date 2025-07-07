@@ -13,6 +13,14 @@ from .utils import clean_aws_response, safe_get_nested
 logger = logging.getLogger(__name__)
 
 
+class NullOutputSink:
+    """Null object pattern for output sink."""
+    def progress(self, message): pass
+    def debug_info(self, message): pass
+    def warning(self, message): pass
+    def info(self, message): pass
+    def error(self, message): pass
+
 class AWSSSOAuditor:
     """Main AWS SSO auditing class."""
 
@@ -22,11 +30,10 @@ class AWSSSOAuditor:
         self.config.validate()
 
         # Initialize output sink
-        self.output_sink = output_sink
+        self.output_sink = output_sink or NullOutputSink()
 
         # Initialize AWS clients
-        if self.output_sink:
-            self.output_sink.progress("Initializing AWS clients...")
+        self.output_sink.progress("Initializing AWS clients...")
         self.aws_manager = AWSClientManager(self.config)
 
         # Store frequently used references
@@ -40,8 +47,7 @@ class AWSSSOAuditor:
         if self.config.debug:
             client_info = self.aws_manager.get_client_info()
             logger.debug("AWS Client Info: %s", client_info)
-            if self.output_sink:
-                self.output_sink.debug_info(f"Connected to SSO instance: {self.instance_arn}")
+            self.output_sink.debug_info(f"Connected to SSO instance: {self.instance_arn}")
 
         logger.info("AWS SSO Auditor initialized successfully")
 
@@ -49,23 +55,19 @@ class AWSSSOAuditor:
     def audit_account(self, account_id: str) -> Dict[str, Any]:
         """Perform complete audit of SSO access for the given account."""
         logger.info("Starting AWS SSO audit for account: %s", account_id)
-        if self.output_sink:
-            self.output_sink.progress(f"Starting audit for account: {account_id}")
+        self.output_sink.progress(f"Starting audit for account: {account_id}")
 
         try:
             # Get all account assignments (only for permission sets assigned to this account)
-            if self.output_sink:
-                self.output_sink.progress("Retrieving account assignments...")
+            self.output_sink.progress("Retrieving account assignments...")
             assignments = self.get_all_account_assignments(account_id)
-            if self.output_sink:
-                self.output_sink.debug_info(f"Found {len(assignments)} assignments")
+            self.output_sink.debug_info(f"Found {len(assignments)} assignments")
 
             # Organize data
             groups_data = {}
             permission_sets_data = {}
 
-            if self.output_sink:
-                self.output_sink.progress("Processing assignments...")
+            self.output_sink.progress("Processing assignments...")
             for assignment in assignments:
                 principal_type = assignment["PrincipalType"]
                 principal_id = assignment["PrincipalId"]
@@ -73,8 +75,7 @@ class AWSSSOAuditor:
 
                 if principal_type == "GROUP":
                     if principal_id not in groups_data:
-                        if self.output_sink:
-                            self.output_sink.progress(f"Processing group: {principal_id}")
+                        self.output_sink.progress(f"Processing group: {principal_id}")
                         group_details = self.get_group_details(principal_id)
                         group_members = self.get_group_members(principal_id)
                         groups_data[principal_id] = {
@@ -96,10 +97,9 @@ class AWSSSOAuditor:
 
                 # Collect permission set data (only for those with assignments to this account)
                 if permission_set_arn not in permission_sets_data:
-                    if self.output_sink:
-                        self.output_sink.progress(
-                            f"Processing permission set: {permission_set_arn}"
-                        )
+                    self.output_sink.progress(
+                        f"Processing permission set: {permission_set_arn}"
+                    )
                     permission_set_details = self.get_permission_set_details(permission_set_arn)
                     permission_set_policies = self.get_permission_set_policies(permission_set_arn)
                     permission_sets_data[permission_set_arn] = {
@@ -123,8 +123,7 @@ class AWSSSOAuditor:
                 ps.get("Name", "Unknown") for ps in permission_sets_data.values()
             ]
 
-            if self.output_sink:
-                self.output_sink.progress("Finalizing audit results...")
+            self.output_sink.progress("Finalizing audit results...")
 
             # Build final result
             result = {
