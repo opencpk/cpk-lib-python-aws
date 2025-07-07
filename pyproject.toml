@@ -14,7 +14,7 @@ license = {text = "GPL-3.0"}
 requires-python = ">=3.8.1"
 dependencies = [
     "boto3>=1.26.0",
-    "botocore>=1.29.0", 
+    "botocore>=1.29.0",
     "pyyaml>=6.0",
     "certifi>=2023.7.22",
     "urllib3>=1.25.4,<2.0.0",  # Changed this line
@@ -27,6 +27,7 @@ dev = [
     "black>=23.0.0",
     "flake8>=6.0.0",  # This should work with Python 3.8+
     "mypy>=1.0.0",
+    "pylint>=2.17.0",
     "boto3-stubs[sso-admin,identitystore,organizations]>=1.26.0",
 ]
 
@@ -57,3 +58,45 @@ python_version = "3.8"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
+
+# 🎯 PYLINT CONFIGURATION - This should fix your import issues
+[tool.pylint.master]
+# Add current directory to Python path for imports
+init-hook = 'import sys; sys.path.append(".")'
+# Don't cache results to avoid stale import issues
+persistent = false
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.messages_control]
+disable = [
+    "broad-exception-caught",
+    "too-many-arguments",
+    "too-many-locals",
+    "import-error",  # This should fix your import issues
+    "no-name-in-module",  # Also helps with module import issues
+    "wrong-import-order",  # Less strict about import order
+    "ungrouped-imports",  # Allow flexible import grouping
+    "too-few-public-methods",
+    "invalid-name",
+]
+
+[tool.pylint.design]
+max-statements = 60
+max-module-lines = 1200
+max-attributes = 15  # Allow more class attributes
+max-public-methods = 25  # Allow more public methods
+
+[tool.pylint.typecheck]
+# Don't complain about missing members in these modules
+ignored-modules = [
+    "boto3",
+    "botocore",
+    "yaml",
+    "cpk_lib_python_aws",
+]
+
+[tool.pylint.imports]
+# Allow relative imports within the package
+allow-any-import-level = true

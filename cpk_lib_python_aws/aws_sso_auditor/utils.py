@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 """Utility functions for AWS SSO Auditor."""
 
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+
 from ..shared.utils import validate_account_id as base_validate_account_id
 
 
@@ -11,11 +13,11 @@ def validate_account_id(account_id: str) -> bool:
 
 def format_permission_set_arn(instance_arn: str, permission_set_name: str) -> str:
     """Format permission set ARN from instance ARN and name."""
-    parts = instance_arn.split(':')
+    parts = instance_arn.split(":")
     if len(parts) >= 6:
-        region = parts[3]
         account = parts[4]
-        return f"arn:aws:sso:::{account}:permissionSet/{instance_arn.split('/')[-1]}/{permission_set_name}"
+        instance_id = instance_arn.split("/")[-1]
+        return f"arn:aws:sso:::{account}:permissionSet/{instance_id}/{permission_set_name}"
     return permission_set_name
 
 
@@ -34,7 +36,7 @@ def clean_aws_response(response: Dict[str, Any]) -> Dict[str, Any]:
     """Clean AWS API response by removing metadata."""
     cleaned = response.copy()
     # Remove common AWS metadata keys
-    metadata_keys = ['ResponseMetadata', 'NextToken', 'IsTruncated']
+    metadata_keys = ["ResponseMetadata", "NextToken", "IsTruncated"]
     for key in metadata_keys:
         cleaned.pop(key, None)
     return cleaned
@@ -42,6 +44,6 @@ def clean_aws_response(response: Dict[str, Any]) -> Dict[str, Any]:
 
 def format_timestamp(timestamp) -> str:
     """Format AWS timestamp for display."""
-    if hasattr(timestamp, 'isoformat'):
+    if hasattr(timestamp, "isoformat"):
         return timestamp.isoformat()
     return str(timestamp)
