@@ -42,6 +42,7 @@
 .spyproject
 .tox/
 .venv
+.vscode/
 .webassets-cache
 /site
 ENV/
@@ -85,4 +86,3 @@ var/
 venv.bak/
 venv/
 wheels/
-.vscode/

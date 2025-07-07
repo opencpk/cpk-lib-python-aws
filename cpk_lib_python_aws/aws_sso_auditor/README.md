@@ -35,7 +35,7 @@ A powerful CLI tool for auditing AWS Single Sign-On (SSO) configurations, analyz
 - AWS SSO enabled in your AWS organization
 - AWS credentials with appropriate SSO permissions:
   - `sso-admin:*` permissions
-  - `identitystore:*` permissions 
+  - `identitystore:*` permissions
   - `organizations:ListAccounts` permission
 
 ### Install from Source
@@ -224,7 +224,7 @@ $ aws-sso-auditor 123456789012 --output-format json --debug
   },
   "sso_groups_summary": [
     "Developers",
-    "Administrators", 
+    "Administrators",
     "ReadOnlyUsers"
   ],
   "sso_permission_sets_summary": [
