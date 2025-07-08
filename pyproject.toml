@@ -43,12 +43,6 @@ Documentation = "https://github.com/opencpk/cpk-lib-python-aws#readme"
 where = ["."]
 include = ["cpk_lib_python_aws*"]
 
-[tool.pytest.ini_options]
-testpaths = ["cpk_lib_python_aws/tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-
 [tool.black]
 line-length = 100
 target-version = ['py38']
