@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""Tests for AWS Access Auditor configuration module."""
 import os
 
 import pytest

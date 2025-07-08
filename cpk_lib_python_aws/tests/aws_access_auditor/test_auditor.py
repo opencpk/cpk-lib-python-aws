@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from unittest.mock import MagicMock, Mock, patch
-
-import pytest
+"""Tests for AWS Access Auditor module."""
+from unittest.mock import Mock, patch
 
 from cpk_lib_python_aws.aws_access_auditor.auditor import AWSSSOAuditor, NullOutputSink
 from cpk_lib_python_aws.aws_access_auditor.config import Config
-from cpk_lib_python_aws.aws_access_auditor.exceptions import AWSSSOAuditorError
 
 
 class TestNullOutputSink:
@@ -21,8 +19,6 @@ class TestNullOutputSink:
         assert sink.warning("test message") is None
         assert sink.info("test message") is None
         assert sink.error("test message") is None
-
-    """Test the AWSSSOAuditor class."""
 
     @patch("cpk_lib_python_aws.aws_access_auditor.auditor.AWSClientManager")
     def test_auditor_initialization_with_default_config(self, mock_aws_manager):
