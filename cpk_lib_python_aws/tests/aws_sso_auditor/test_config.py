@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 import os
+
 import pytest
+
 from cpk_lib_python_aws.aws_sso_auditor.config import Config
 from cpk_lib_python_aws.aws_sso_auditor.exceptions import ConfigurationError
 
@@ -21,10 +24,10 @@ def test_config_validation_valid_formats():
     """Test that valid output formats pass validation."""
     config = Config(output_formats=["json"])
     config.validate()
-    
+
     config = Config(output_formats=["yaml"])
     config.validate()
-    
+
     config = Config(output_formats=["both"])
     config.validate()
 
@@ -42,7 +45,7 @@ def test_environment_variable_override():
     os.environ["AWS_REGION"] = "eu-west-1"
     os.environ["AWS_SSO_AUDITOR_DEBUG"] = "true"
     os.environ["AWS_SSO_AUDITOR_QUIET"] = "true"
-    
+
     try:
         config = Config()
         assert config.aws_region == "eu-west-1"
@@ -58,10 +61,7 @@ def test_environment_variable_override():
 def test_constructor_overrides():
     """Test that constructor parameters override defaults."""
     config = Config(
-        aws_region="ap-southeast-1",
-        output_directory="/tmp/test",
-        debug=True,
-        timeout=60
+        aws_region="ap-southeast-1", output_directory="/tmp/test", debug=True, timeout=60
     )
     assert config.aws_region == "ap-southeast-1"
     assert config.output_directory == "/tmp/test"
