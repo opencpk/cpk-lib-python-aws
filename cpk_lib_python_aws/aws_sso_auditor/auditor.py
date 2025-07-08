@@ -15,11 +15,22 @@ logger = logging.getLogger(__name__)
 
 class NullOutputSink:
     """Null object pattern for output sink."""
-    def progress(self, message): pass
-    def debug_info(self, message): pass
-    def warning(self, message): pass
-    def info(self, message): pass
-    def error(self, message): pass
+
+    def progress(self, message):
+        """Display progress message (no-op)."""
+
+    def debug_info(self, message):
+        """Display debug information (no-op)."""
+
+    def warning(self, message):
+        """Display warning message (no-op)."""
+
+    def info(self, message):
+        """Display info message (no-op)."""
+
+    def error(self, message):
+        """Display error message (no-op)."""
+
 
 class AWSSSOAuditor:
     """Main AWS SSO auditing class."""
@@ -97,9 +108,7 @@ class AWSSSOAuditor:
 
                 # Collect permission set data (only for those with assignments to this account)
                 if permission_set_arn not in permission_sets_data:
-                    self.output_sink.progress(
-                        f"Processing permission set: {permission_set_arn}"
-                    )
+                    self.output_sink.progress(f"Processing permission set: {permission_set_arn}")
                     permission_set_details = self.get_permission_set_details(permission_set_arn)
                     permission_set_policies = self.get_permission_set_policies(permission_set_arn)
                     permission_sets_data[permission_set_arn] = {
