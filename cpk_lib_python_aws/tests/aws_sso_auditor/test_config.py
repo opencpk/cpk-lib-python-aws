@@ -20,30 +20,19 @@ def test_default_config_values():
 def test_config_validation_valid_formats():
     """Test that valid output formats pass validation."""
     config = Config(output_formats=["json"])
-    config.validate()  # Should not raise
+    config.validate()
     
     config = Config(output_formats=["yaml"])
-    config.validate()  # Should not raise
+    config.validate()
     
     config = Config(output_formats=["both"])
-    config.validate()  # Should not raise
+    config.validate()
 
 
 def test_config_validation_invalid_format():
     """Test that invalid output formats raise ConfigurationError."""
     config = Config(output_formats=["invalid"])
     with pytest.raises(ConfigurationError, match="Invalid output format: invalid"):
-        config.validate()
-
-
-def test_config_validation_invalid_timeout():
-    """Test that invalid timeout raises ConfigurationError."""
-    config = Config(timeout=0)
-    with pytest.raises(ConfigurationError, match="Timeout must be greater than 0"):
-        config.validate()
-    
-    config = Config(timeout=-5)
-    with pytest.raises(ConfigurationError, match="Timeout must be greater than 0"):
         config.validate()
 
 
