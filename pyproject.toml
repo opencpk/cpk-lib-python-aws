@@ -37,7 +37,7 @@ dev = [
 ]
 
 [project.scripts]
-aws-sso-auditor = "cpk_lib_python_aws.aws_sso_auditor.cli:main"
+aws-access-auditor = "cpk_lib_python_aws.aws_access_auditor.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/opencpk/cpk-lib-python-aws"

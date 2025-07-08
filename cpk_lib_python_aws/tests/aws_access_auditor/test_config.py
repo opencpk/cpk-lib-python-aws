@@ -3,8 +3,8 @@ import os
 
 import pytest
 
-from cpk_lib_python_aws.aws_sso_auditor.config import Config
-from cpk_lib_python_aws.aws_sso_auditor.exceptions import ConfigurationError
+from cpk_lib_python_aws.aws_access_auditor.config import Config
+from cpk_lib_python_aws.aws_access_auditor.exceptions import ConfigurationError
 
 
 def test_default_config_values():
@@ -43,8 +43,8 @@ def test_environment_variable_override():
     """Test that environment variables override default values."""
     # Set environment variables
     os.environ["AWS_REGION"] = "eu-west-1"
-    os.environ["AWS_SSO_AUDITOR_DEBUG"] = "true"
-    os.environ["AWS_SSO_AUDITOR_QUIET"] = "true"
+    os.environ["AWS_ACCESS_AUDITOR_DEBUG"] = "true"
+    os.environ["AWS_ACCESS_AUDITOR_QUIET"] = "true"
 
     try:
         config = Config()
@@ -54,8 +54,8 @@ def test_environment_variable_override():
     finally:
         # Clean up environment variables
         os.environ.pop("AWS_REGION", None)
-        os.environ.pop("AWS_SSO_AUDITOR_DEBUG", None)
-        os.environ.pop("AWS_SSO_AUDITOR_QUIET", None)
+        os.environ.pop("AWS_ACCESS_AUDITOR_DEBUG", None)
+        os.environ.pop("AWS_ACCESS_AUDITOR_QUIET", None)
 
 
 def test_constructor_overrides():

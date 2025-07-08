@@ -35,10 +35,10 @@ class Config:
         self.aws_region = os.getenv("AWS_REGION", self.aws_region)
         self.aws_profile = os.getenv("AWS_PROFILE", self.aws_profile)
 
-        self.output_directory = os.getenv("AWS_SSO_AUDITOR_OUTPUT_DIR", self.output_directory)
-        if os.getenv("AWS_SSO_AUDITOR_DEBUG", "").lower() == "true":
+        self.output_directory = os.getenv("AWS_ACCESS_AUDITOR_OUTPUT_DIR", self.output_directory)
+        if os.getenv("AWS_ACCESS_AUDITOR_DEBUG", "").lower() == "true":
             self.debug = True
-        if os.getenv("AWS_SSO_AUDITOR_QUIET", "").lower() == "true":
+        if os.getenv("AWS_ACCESS_AUDITOR_QUIET", "").lower() == "true":
             self.quiet = True
 
     def validate(self) -> None:

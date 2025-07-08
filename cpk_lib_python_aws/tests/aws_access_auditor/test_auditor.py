@@ -3,9 +3,9 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from cpk_lib_python_aws.aws_sso_auditor.auditor import AWSSSOAuditor, NullOutputSink
-from cpk_lib_python_aws.aws_sso_auditor.config import Config
-from cpk_lib_python_aws.aws_sso_auditor.exceptions import AWSSSOAuditorError
+from cpk_lib_python_aws.aws_access_auditor.auditor import AWSSSOAuditor, NullOutputSink
+from cpk_lib_python_aws.aws_access_auditor.config import Config
+from cpk_lib_python_aws.aws_access_auditor.exceptions import AWSSSOAuditorError
 
 
 class TestNullOutputSink:
@@ -24,7 +24,7 @@ class TestNullOutputSink:
 
     """Test the AWSSSOAuditor class."""
 
-    @patch("cpk_lib_python_aws.aws_sso_auditor.auditor.AWSClientManager")
+    @patch("cpk_lib_python_aws.aws_access_auditor.auditor.AWSClientManager")
     def test_auditor_initialization_with_default_config(self, mock_aws_manager):
         """Test auditor initialization with default configuration."""
         # Mock the AWS client manager
@@ -45,7 +45,7 @@ class TestNullOutputSink:
         assert auditor.identity_store_id == "d-123456789"
         assert auditor.instance_arn == "arn:aws:sso:::instance/ssoins-123456789"
 
-    @patch("cpk_lib_python_aws.aws_sso_auditor.auditor.AWSClientManager")
+    @patch("cpk_lib_python_aws.aws_access_auditor.auditor.AWSClientManager")
     def test_auditor_initialization_with_custom_config(self, mock_aws_manager):
         """Test auditor initialization with custom configuration."""
         mock_manager_instance = Mock()
@@ -66,7 +66,7 @@ class TestNullOutputSink:
         assert auditor.config.debug is True
         assert auditor.output_sink == output_sink
 
-    @patch("cpk_lib_python_aws.aws_sso_auditor.auditor.AWSClientManager")
+    @patch("cpk_lib_python_aws.aws_access_auditor.auditor.AWSClientManager")
     def test_get_permission_sets_for_account_success(self, mock_aws_manager):
         """Test successful retrieval of permission sets for account."""
         # Setup mocks
@@ -99,7 +99,7 @@ class TestNullOutputSink:
         assert "arn:aws:sso:::permissionSet/ps-123" in result
         assert "arn:aws:sso:::permissionSet/ps-456" in result
 
-    @patch("cpk_lib_python_aws.aws_sso_auditor.auditor.AWSClientManager")
+    @patch("cpk_lib_python_aws.aws_access_auditor.auditor.AWSClientManager")
     def test_get_permission_sets_for_account_failure(self, mock_aws_manager):
         """Test handling of errors when retrieving permission sets."""
         # Setup mocks to raise exception
@@ -121,7 +121,7 @@ class TestNullOutputSink:
         # Should return empty list on error
         assert result == []
 
-    @patch("cpk_lib_python_aws.aws_sso_auditor.auditor.AWSClientManager")
+    @patch("cpk_lib_python_aws.aws_access_auditor.auditor.AWSClientManager")
     def test_get_group_details_success(self, mock_aws_manager):
         """Test successful retrieval of group details."""
         mock_manager_instance = Mock()
@@ -148,7 +148,7 @@ class TestNullOutputSink:
         assert result["DisplayName"] == "Test Group"
         assert result["Description"] == "A test group"
 
-    @patch("cpk_lib_python_aws.aws_sso_auditor.auditor.AWSClientManager")
+    @patch("cpk_lib_python_aws.aws_access_auditor.auditor.AWSClientManager")
     def test_get_group_details_failure(self, mock_aws_manager):
         """Test handling of errors when retrieving group details."""
         mock_manager_instance = Mock()
@@ -171,7 +171,7 @@ class TestNullOutputSink:
         assert result["DisplayName"] == "Unknown"
         assert result["Description"] == ""
 
-    @patch("cpk_lib_python_aws.aws_sso_auditor.auditor.AWSClientManager")
+    @patch("cpk_lib_python_aws.aws_access_auditor.auditor.AWSClientManager")
     def test_audit_account_basic_flow(self, mock_aws_manager):
         """Test basic audit_account flow with minimal data."""
         mock_manager_instance = Mock()

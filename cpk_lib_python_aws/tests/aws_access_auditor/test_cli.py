@@ -5,19 +5,19 @@ from unittest.mock import Mock, patch, MagicMock
 from io import StringIO
 import sys
 
-from cpk_lib_python_aws.aws_sso_auditor.cli import (
+from cpk_lib_python_aws.aws_access_auditor.cli import (
     setup_logging,
     create_parser,
     main
 )
-from cpk_lib_python_aws.aws_sso_auditor.config import Config
-from cpk_lib_python_aws.aws_sso_auditor.exceptions import AWSSSOAuditorError
+from cpk_lib_python_aws.aws_access_auditor.config import Config
+from cpk_lib_python_aws.aws_access_auditor.exceptions import AWSSSOAuditorError
 
 
 class TestSetupLogging:
     """Test the setup_logging function."""
     
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.logging.basicConfig')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.logging.basicConfig')
     def test_setup_logging_default(self, mock_basic_config):
         """Test setup_logging with default parameters."""
         setup_logging()
@@ -27,7 +27,7 @@ class TestSetupLogging:
         assert call_args[1]['level'] == logging.INFO
         assert "%(asctime)s - %(name)s - %(levelname)s - %(message)s" in call_args[1]['format']
     
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.logging.basicConfig')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.logging.basicConfig')
     def test_setup_logging_debug(self, mock_basic_config):
         """Test setup_logging with debug enabled."""
         setup_logging(debug=True)
@@ -35,7 +35,7 @@ class TestSetupLogging:
         call_args = mock_basic_config.call_args
         assert call_args[1]['level'] == logging.DEBUG
     
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.logging.basicConfig')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.logging.basicConfig')
     def test_setup_logging_quiet(self, mock_basic_config):
         """Test setup_logging with quiet enabled."""
         setup_logging(quiet=True)
@@ -52,7 +52,7 @@ class TestCreateParser:
         parser = create_parser()
         
         assert isinstance(parser, argparse.ArgumentParser)
-        assert parser.prog == "aws-sso-auditor"
+        assert parser.prog == "aws-access-auditor"
     
     def test_parser_required_arguments(self):
         """Test parsing with required arguments only."""
@@ -109,10 +109,10 @@ class TestCreateParser:
 class TestMain:
     """Test the main function."""
     
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputFormatter')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.AWSSSOAuditor')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputSink')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.setup_logging')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputFormatter')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.AWSSSOAuditor')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputSink')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.setup_logging')
     def test_main_success(self, mock_setup_logging, mock_output_sink, mock_auditor, mock_formatter):
         """Test successful main execution."""
         # Setup mocks
@@ -140,10 +140,10 @@ class TestMain:
         mock_formatter_instance.save_results.assert_called_once()
         mock_formatter_instance.display_results.assert_called_once()
     
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputFormatter')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.AWSSSOAuditor')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputSink')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.setup_logging')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputFormatter')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.AWSSSOAuditor')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputSink')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.setup_logging')
     def test_main_with_custom_args(self, mock_setup_logging, mock_output_sink, mock_auditor, mock_formatter):
         """Test main with custom arguments."""
         # Setup mocks
@@ -170,10 +170,10 @@ class TestMain:
         assert result == 0
         mock_setup_logging.assert_called_once_with(True, False)  # debug=True, quiet=False
     
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.AWSSSOAuditor')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputSink')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.setup_logging')
-    def test_main_aws_sso_auditor_error(self, mock_setup_logging, mock_output_sink, mock_auditor):
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.AWSSSOAuditor')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputSink')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.setup_logging')
+    def test_main_aws_access_auditor_error(self, mock_setup_logging, mock_output_sink, mock_auditor):
         """Test main handling AWSSSOAuditorError."""
         mock_output_instance = Mock()
         mock_output_sink.return_value = mock_output_instance
@@ -185,9 +185,9 @@ class TestMain:
         assert result == 1
         mock_output_instance.error.assert_called_with("AWS SSO Auditor Error: Test error")
     
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.AWSSSOAuditor')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputSink')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.setup_logging')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.AWSSSOAuditor')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputSink')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.setup_logging')
     def test_main_unexpected_error(self, mock_setup_logging, mock_output_sink, mock_auditor):
         """Test main handling unexpected errors."""
         mock_output_instance = Mock()
@@ -200,10 +200,10 @@ class TestMain:
         assert result == 1
         mock_output_instance.error.assert_called_with("Unexpected error: Unexpected error")
     
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputFormatter')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.AWSSSOAuditor')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputSink')
-    @patch('cpk_lib_python_aws.aws_sso_auditor.cli.setup_logging')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputFormatter')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.AWSSSOAuditor')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputSink')
+    @patch('cpk_lib_python_aws.aws_access_auditor.cli.setup_logging')
     def test_main_config_creation(self, mock_setup_logging, mock_output_sink, mock_auditor, mock_formatter):
         """Test that Config is created correctly from CLI args."""
         mock_output_instance = Mock()
@@ -244,10 +244,10 @@ class TestMain:
     
     def test_main_both_output_format(self):
         """Test that 'both' output format expands to json and yaml."""
-        with patch('cpk_lib_python_aws.aws_sso_auditor.cli.setup_logging'), \
-             patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputSink') as mock_output_sink, \
-             patch('cpk_lib_python_aws.aws_sso_auditor.cli.AWSSSOAuditor') as mock_auditor, \
-             patch('cpk_lib_python_aws.aws_sso_auditor.cli.OutputFormatter') as mock_formatter:
+        with patch('cpk_lib_python_aws.aws_access_auditor.cli.setup_logging'), \
+             patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputSink') as mock_output_sink, \
+             patch('cpk_lib_python_aws.aws_access_auditor.cli.AWSSSOAuditor') as mock_auditor, \
+             patch('cpk_lib_python_aws.aws_access_auditor.cli.OutputFormatter') as mock_formatter:
             
             mock_output_instance = Mock()
             mock_output_sink.return_value = mock_output_instance

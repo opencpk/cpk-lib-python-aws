@@ -50,4 +50,4 @@ jobs:
 
       - name: Test CLI command
         run: |
-          aws-sso-auditor --help
+          aws-access-auditor --help

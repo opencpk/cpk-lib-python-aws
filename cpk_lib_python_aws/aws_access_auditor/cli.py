@@ -25,7 +25,7 @@ def setup_logging(debug: bool = False, quiet: bool = False) -> None:
     logging.basicConfig(
         level=level,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[logging.FileHandler("aws_sso_auditor.log"), logging.StreamHandler()],
+        handlers=[logging.FileHandler("aws_access_auditor.log"), logging.StreamHandler()],
     )
 
 
@@ -33,7 +33,7 @@ def create_parser() -> argparse.ArgumentParser:
     """Create CLI argument parser."""
     parser = argparse.ArgumentParser(
         description="Audit AWS SSO Groups and Permission Sets for an account",
-        prog="aws-sso-auditor",
+        prog="aws-access-auditor",
     )
 
     parser.add_argument("account_id", help="AWS Account ID to audit")

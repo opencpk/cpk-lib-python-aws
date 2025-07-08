@@ -47,7 +47,7 @@ pip install git+https://github.com/opencpk/cpk-lib-python-aws.git@main
 ### Verify Installation
 
 ```bash
-aws-sso-auditor --help
+aws-access-auditor --help
 ```
 
 ## 🎯 Quick Start
@@ -65,13 +65,13 @@ export AWS_REGION=us-east-1
 ### 2. Run Your First Audit
 
 ```bash
-aws-sso-auditor 123456789012 --output-format json
+aws-access-auditor 123456789012 --output-format json
 ```
 
 ### 3. Generate Comprehensive Reports
 
 ```bash
-aws-sso-auditor 123456789012 --output-format both --output-dir ./audit-reports
+aws-access-auditor 123456789012 --output-format both --output-dir ./audit-reports
 ```
 
 ## 📖 Usage Examples
@@ -79,91 +79,102 @@ aws-sso-auditor 123456789012 --output-format both --output-dir ./audit-reports
 ### 🔍 Basic Auditing
 
 #### Audit a specific AWS account:
+
 ```bash
-aws-sso-auditor 123456789012
+aws-access-auditor 123456789012
 ```
 
 #### Audit with JSON output only:
+
 ```bash
-aws-sso-auditor 123456789012 --output-format json
+aws-access-auditor 123456789012 --output-format json
 ```
 
 #### Audit with YAML output only:
+
 ```bash
-aws-sso-auditor 123456789012 --output-format yaml
+aws-access-auditor 123456789012 --output-format yaml
 ```
 
 #### Audit with both formats:
+
 ```bash
-aws-sso-auditor 123456789012 --output-format both
+aws-access-auditor 123456789012 --output-format both
 ```
 
 ### 📁 Output Management
 
 #### Custom output directory:
+
 ```bash
-aws-sso-auditor 123456789012 --output-dir ./my-audit-reports
+aws-access-auditor 123456789012 --output-dir ./my-audit-reports
 ```
 
 #### Disable timestamps in filenames:
+
 ```bash
-aws-sso-auditor 123456789012 --no-timestamp
+aws-access-auditor 123456789012 --no-timestamp
 ```
 
 ### 🌍 Region and Profile Configuration
 
 #### Specify AWS region:
+
 ```bash
-aws-sso-auditor 123456789012 --aws-region us-west-2
+aws-access-auditor 123456789012 --aws-region us-west-2
 ```
 
 #### Use specific AWS profile:
+
 ```bash
-aws-sso-auditor 123456789012 --aws-profile sso-admin-profile
+aws-access-auditor 123456789012 --aws-profile sso-admin-profile
 ```
 
 ### 🔇 Quiet and Debug Modes
 
 #### Quiet mode (no console output):
+
 ```bash
-aws-sso-auditor 123456789012 --quiet
+aws-access-auditor 123456789012 --quiet
 ```
 
 #### Debug mode (detailed logging):
+
 ```bash
-aws-sso-auditor 123456789012 --debug
+aws-access-auditor 123456789012 --debug
 ```
 
 ### 🐛 Debug & Help
 
 #### Show help:
+
 ```bash
-aws-sso-auditor --help
+aws-access-auditor --help
 ```
 
 ## 📚 Command Reference
 
-| Argument | Description | Default |
-|----------|-------------|---------|
-| `account_id` | AWS Account ID to audit (required) | - |
-| `--output-format` | Output format: `json`, `yaml`, or `both` | `both` |
-| `--output-dir` | Output directory path | `./aws-sso-audit-results` |
-| `--aws-region` | AWS region | `us-east-1` |
-| `--aws-profile` | AWS profile to use | None |
-| `--quiet` `-q` | Suppress console output and logging, only save files | `False` |
-| `--debug` | Enable debug logging | `False` |
-| `--no-timestamp` | Don't include timestamp in filenames | `False` |
-| `--help` | Show help message | - |
+| Argument          | Description                                          | Default                   |
+| ----------------- | ---------------------------------------------------- | ------------------------- |
+| `account_id`      | AWS Account ID to audit (required)                   | -                         |
+| `--output-format` | Output format: `json`, `yaml`, or `both`             | `both`                    |
+| `--output-dir`    | Output directory path                                | `./aws-sso-audit-results` |
+| `--aws-region`    | AWS region                                           | `us-east-1`               |
+| `--aws-profile`   | AWS profile to use                                   | None                      |
+| `--quiet` `-q`    | Suppress console output and logging, only save files | `False`                   |
+| `--debug`         | Enable debug logging                                 | `False`                   |
+| `--no-timestamp`  | Don't include timestamp in filenames                 | `False`                   |
+| `--help`          | Show help message                                    | -                         |
 
 ## 🌍 Environment Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `AWS_REGION` | AWS region | `us-east-1` |
-| `AWS_PROFILE` | AWS profile to use | `sso-admin` |
-| `AWS_SSO_AUDITOR_OUTPUT_DIR` | Default output directory | `./audit-reports` |
-| `AWS_SSO_AUDITOR_DEBUG` | Enable debug mode | `true` |
-| `AWS_SSO_AUDITOR_QUIET` | Enable quiet mode | `true` |
+| Variable                        | Description              | Example           |
+| ------------------------------- | ------------------------ | ----------------- |
+| `AWS_REGION`                    | AWS region               | `us-east-1`       |
+| `AWS_PROFILE`                   | AWS profile to use       | `sso-admin`       |
+| `AWS_ACCESS_AUDITOR_OUTPUT_DIR` | Default output directory | `./audit-reports` |
+| `AWS_ACCESS_AUDITOR_DEBUG`      | Enable debug mode        | `true`            |
+| `AWS_ACCESS_AUDITOR_QUIET`      | Enable quiet mode        | `true`            |
 
 ### Setting Environment Variables
 
@@ -172,11 +183,11 @@ aws-sso-auditor --help
 export AWS_REGION=us-east-1
 
 # Advanced configuration
-export AWS_SSO_AUDITOR_OUTPUT_DIR=./audit-reports
-export AWS_SSO_AUDITOR_DEBUG=true
+export AWS_ACCESS_AUDITOR_OUTPUT_DIR=./audit-reports
+export AWS_ACCESS_AUDITOR_DEBUG=true
 
 # Then use shorter commands
-aws-sso-auditor 123456789012
+aws-access-auditor 123456789012
 ```
 
 ## 🎨 Sample Outputs
@@ -184,10 +195,11 @@ aws-sso-auditor 123456789012
 ### 📊 Successful Audit Output
 
 ```bash
-$ aws-sso-auditor 123456789012 --output-format json --debug
+$ aws-access-auditor 123456789012 --output-format json --debug
 ```
 
 **Console Output:**
+
 ```
 ⏳ Initializing AWS clients...
 ⏳ Starting audit for account: 123456789012
@@ -222,11 +234,7 @@ $ aws-sso-auditor 123456789012 --output-format json --debug
       "output_formats": ["json"]
     }
   },
-  "sso_groups_summary": [
-    "Developers",
-    "Administrators",
-    "ReadOnlyUsers"
-  ],
+  "sso_groups_summary": ["Developers", "Administrators", "ReadOnlyUsers"],
   "sso_permission_sets_summary": [
     "AdministratorAccess",
     "DeveloperAccess",
@@ -290,9 +298,7 @@ $ aws-sso-auditor 123456789012 --output-format json --debug
           ]
         }
       },
-      "AssignedGroups": [
-        "90967fb4-d4e1-7019-c6a2-3b4d2a8c7e5f"
-      ]
+      "AssignedGroups": ["90967fb4-d4e1-7019-c6a2-3b4d2a8c7e5f"]
     }
   ],
   "summary": {
@@ -306,19 +312,25 @@ $ aws-sso-auditor 123456789012 --output-format json --debug
 ### ❌ Error Output Examples
 
 #### Account not found:
+
 ```bash
-$ aws-sso-auditor 999999999999
+$ aws-access-auditor 999999999999
 ```
+
 **Output:**
+
 ```
 ❌ AWS SSO Auditor Error: No permission sets found for account 999999999999
 ```
 
 #### Invalid credentials:
+
 ```bash
-$ aws-sso-auditor 123456789012
+$ aws-access-auditor 123456789012
 ```
+
 **Output:**
+
 ```
 ❌ Unexpected error: Unable to locate credentials
 ```
@@ -326,16 +338,16 @@ $ aws-sso-auditor 123456789012
 ### 🔇 Quiet Mode Output
 
 ```bash
-$ aws-sso-auditor 123456789012 --quiet
+$ aws-access-auditor 123456789012 --quiet
 ```
+
 **Output:** (No console output, only files generated)
 
 ### 🐛 Debug Mode Output
 
 ```bash
-$ aws-sso-auditor 123456789012 --debug
+$ aws-access-auditor 123456789012 --debug
 ```
-
 
 ## 🐍 Python Usage
 
@@ -344,7 +356,7 @@ If you prefer to use this tool as a Python library in your scripts:
 ### Programmatic Usage
 
 ```python -c "
-from cpk_lib_python_aws.aws_sso_auditor import AWSSSOAuditor, Config, OutputFormatter
+from cpk_lib_python_aws.aws_access_auditor import AWSSSOAuditor, Config, OutputFormatter
 from cpk_lib_python_aws.shared import OutputSink
 
 config = Config(
@@ -361,7 +373,6 @@ results = auditor.audit_account('123456789012')
 formatter.save_results(results, '123456789012')
 "
 ```
-
 
 ### Without Timestamps
 
