@@ -21,6 +21,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+]
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
@@ -94,3 +99,25 @@ ignored-modules = [
 [tool.pylint.imports]
 # Allow relative imports within the package
 allow-any-import-level = true
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "cpk_lib_python_aws/tests"
+]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--cov=cpk_lib_python_aws",
+    "--cov-report=term-missing",
+    "--cov-report=html"
+]
+markers = [
+    "unit: Unit tests with mocked responses",
+    "integration: Integration tests with real AWS API calls",
+    "slow: Slow running tests"
+]
