@@ -3,7 +3,7 @@ name: Tests
 
 on:
   push:
-    branches: [main, develop, feat/aws-auditor]
+    branches: [main]
   pull_request:
 
 jobs:

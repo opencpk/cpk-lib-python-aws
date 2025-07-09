@@ -4,7 +4,7 @@ name: precommit
 on:
   pull_request:
   push:
-    branches: [main, feat/aws-auditor]
+    branches: [main]
 
 permissions:
   actions: read
