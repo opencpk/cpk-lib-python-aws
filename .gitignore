@@ -86,3 +86,10 @@ var/
 venv.bak/
 venv/
 wheels/
+*.egg-info/
+*.egg-link
+*.installed.cfg
+*.pyc
+*.pyo
+*.pyd
+*.swp
